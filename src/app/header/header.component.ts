@@ -8,11 +8,15 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class HeaderComponent implements OnInit {
 
+  @Input()
+  public sideNavBar!: MatSidenav;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
   public openSideNav(){
+    this.sideNavBar.toggle();
   }
 }
