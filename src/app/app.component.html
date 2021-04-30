@@ -11,7 +11,16 @@
         <mat-list-item>
           <mat-icon>home</mat-icon>
           <span class="ml-15">
-            <a href="#">Home</a>
+            <a [routerLink]="['/']" (click)="sidenav.toggle()">Home</a>
+          </span>
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+
+        <mat-list-item>
+          <mat-icon>list</mat-icon>
+          <span class="ml-15">
+            <a [routerLink]="['/categoria']" (click)="sidenav.toggle()">Categoria</a>
           </span>
         </mat-list-item>
 
