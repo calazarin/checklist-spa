@@ -23,3 +23,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mr-10{
   margin-right: 10px !important;
 }
+
+.flx-rw-ctnr{
+  display: flex !important;
+  flex-direction: row;
+}
+
+.flx-evenly{
+  justify-content: space-evenly;
+}

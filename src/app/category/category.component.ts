@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 import { Category } from '../_models/category';
 
 export const CATEGORY_DATA = [
@@ -18,7 +20,7 @@ export class CategoryComponent implements OnInit {
   public displayedColumns: string[] = ['id', 'name', 'actions'];
   public dataSource: Category[] = CATEGORY_DATA;
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -29,6 +31,13 @@ export class CategoryComponent implements OnInit {
 
   public deleteCategory(category: Category){
     console.log('delete category clicked');
+
+    this.dialog.open(DialogComponent, { disableClose: true, data : {
+      msg: 'Você tem certeza que deseja apagar essa categoria?', leftButton: 'Cancelar', rightButton: 'OK'
+    }}).afterClosed().subscribe(resp => {
+      console.log('Modal apagar fechada');
+    });
+
   }
 
   public createNewCategory(){
