@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { CategoryEditComponent } from '../category-edit/category-edit.component';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Category } from '../_models/category';
 
@@ -25,8 +26,15 @@ export class CategoryComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public editCategory(category: Category){
+  public editCategory(inputCategory: Category){
     console.log('edit category clicked');
+
+    this.dialog.open(CategoryEditComponent, { disableClose: true, data : { editableCategory: inputCategory }
+    }).afterClosed().subscribe(resp => {
+      console.log('Modal editar fechada');
+    });
+
+
   }
 
   public deleteCategory(category: Category){
@@ -42,5 +50,10 @@ export class CategoryComponent implements OnInit {
 
   public createNewCategory(){
       console.log('create new category clicked');
+
+      this.dialog.open(CategoryEditComponent, { disableClose: true, data : { actionName: 'Criar' }
+      }).afterClosed().subscribe(resp => {
+        console.log('Modal criar fechada');
+      });
   }
 }
