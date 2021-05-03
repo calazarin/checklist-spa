@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { CATEGORY_DATA } from '../category/category.component';
+import { ChecklistEditComponent } from '../checklist-edit/checklist-edit.component';
+import { DialogComponent } from '../dialog/dialog.component';
 import { ChecklistItem } from '../_models/checklist_item';
 
 export const CHECKLIST_DATA = [
@@ -24,7 +27,7 @@ export class ChecklistComponent implements OnInit {
 
   public displayedColumns: string[] = ['id', 'completed', 'description', 'deadline', 'postDate', 'category', 'actions'];
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -35,14 +38,36 @@ export class ChecklistComponent implements OnInit {
 
   public createNewItem(){
     console.log('Criar novo item do checklist clicado!');
+
+    this.dialog.open(ChecklistEditComponent, {
+      disableClose: true, data: { actionName: 'Criar' },
+    }).afterClosed().subscribe( resp => {
+      console.log('Fechando modal de criação');
+    });
+
   }
 
   public deleteChecklistItem(checklistItem: ChecklistItem){
     console.log('deletando item do checklist');
+
+    this.dialog.open(DialogComponent, { disableClose: true,
+      data: { msg: 'Você deseja realmente apagar esse item?', leftButtonLabel: 'Cancelar', rightButtonLabel: 'Ok' }
+    }).afterClosed().subscribe(resp => {
+
+      console.log('Janela modal confirmar apagar fechada');
+
+    });
+
   }
 
   public updateChecklistItem(checklistItem: ChecklistItem){
     console.log('atualizando item do checklist');
+
+    this.dialog.open(ChecklistEditComponent, {
+      disableClose: true, data: { updatableChecklistItem: checklistItem, actionName: 'Editar' },
+    }).afterClosed().subscribe( resp => {
+      console.log('Fechando modal de edição');
+    });
   }
 
 }
