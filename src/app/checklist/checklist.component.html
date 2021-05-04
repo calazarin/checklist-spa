@@ -31,12 +31,12 @@
 
         <ng-container matColumnDef="deadline">
           <th mat-header-cell *matHeaderCellDef>Prazo</th>
-          <td mat-cell *matCellDef="let element"> {{element.deadline | date: 'MM/dd/yyyy'}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.deadline | date: 'dd/MM/yyyy'}} </td>
         </ng-container>
 
         <ng-container matColumnDef="postDate">
           <th mat-header-cell *matHeaderCellDef>Data de postagem</th>
-          <td mat-cell *matCellDef="let element"> {{element.postDate | date: 'MM/dd/yyyy'}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.postDate | date: 'dd/MM/yyyy'}} </td>
         </ng-container>
 
         <ng-container matColumnDef="category">
