@@ -1,7 +1,7 @@
 import { Output } from '@angular/core';
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CATEGORY_DATA } from '../category/category.component';
+import { CategoryService } from '../service/category.service';
 import { Category } from '../_models/category';
 import { ChecklistItem } from '../_models/checklist_item';
 
@@ -16,14 +16,25 @@ export class ChecklistFormComponent implements OnInit {
   @Input() public checklistItem!: ChecklistItem;
   @Output() public formCloseEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  public categories: Category[] = CATEGORY_DATA;
+  public categories!: Category[];
 
   public checklistForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private categoryService: CategoryService) { }
 
   ngOnInit(): void {
 
+    this.categoryService.getAllCategories().subscribe((resp: Category[]) => {
+      this.categories = resp;
+      this.buildForm();
+    }, (error: any) => {
+      console.log(`Um erro ocorreu ao chamar a API ${error}`);
+    })
+
+
+  }
+
+  private buildForm(){
     this.checklistForm = this.formBuilder.group(
       {
         completed: [this.checklistItem != null ? this.checklistItem.completed : false, Validators.required ],
