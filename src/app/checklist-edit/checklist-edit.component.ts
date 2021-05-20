@@ -27,7 +27,7 @@ export class ChecklistEditComponent implements OnInit {
   }
 
   public onFormClose($event: any){
-    this.modalRef.close();
+    this.modalRef.close($event);
   }
 
 }

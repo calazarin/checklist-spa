@@ -27,7 +27,7 @@ export class CategoryEditComponent implements OnInit {
 
   public closeModalWindow($event: any){
     //TODO: handle action - save/cancel
-    if($event != null) this.dialogRef.close();
+    if($event != null) this.dialogRef.close($event);
   }
 
 }

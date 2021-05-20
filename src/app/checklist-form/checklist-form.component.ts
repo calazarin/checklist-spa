@@ -1,6 +1,6 @@
-import { Output } from '@angular/core';
+import { Output, ViewChild } from '@angular/core';
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { CategoryService } from '../service/category.service';
 import { Category } from '../_models/category';
 import { ChecklistItem } from '../_models/checklist_item';
@@ -19,6 +19,8 @@ export class ChecklistFormComponent implements OnInit {
   public categories!: Category[];
 
   public checklistForm!: FormGroup;
+
+  @ViewChild(FormGroupDirective) public checklistFormDirective!: FormGroupDirective;
 
   constructor(private formBuilder: FormBuilder, private categoryService: CategoryService) { }
 
@@ -46,8 +48,18 @@ export class ChecklistFormComponent implements OnInit {
 
   }
 
+  public clearForm(){
+    this.checklistForm.reset();
+   // this.checklistFormDirective.resetForm();
+  }
+
   public save(){
-      this.formCloseEvent.emit(true);
+    if(this.checklistForm.valid) {
+      this.clearForm();
+     // this.formCloseEvent.emit(true);
+    } else {
+      console.log('Invalid form');
+    }
   }
 
   public cancel(){
