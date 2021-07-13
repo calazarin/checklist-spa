@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { CategoryService } from '../service/category.service';
+import { SnackBarService } from '../service/snack-bar.service';
 import { Category } from '../_models/category';
 
 @Component({
@@ -22,7 +24,8 @@ export class CategoryFormComponent implements OnInit {
 
   public isFormReady = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private categoryService: CategoryService,
+    private snackbarService: SnackBarService) {
 
   }
 
@@ -34,17 +37,36 @@ export class CategoryFormComponent implements OnInit {
   }
 
   public cancel(){
-    console.log('Cancelar clicado');
     this.closeModelEventEmitter.emit(false);
   }
 
   public save(){
+
     if(this.categoryForm.valid){
-      console.log('Salvar clicado');
-      this.clearForm();
-  //    this.closeModelEventEmitter.emit(true);
-    } else {
-      console.log('invalid form');
+
+      if(this.actionName == 'Editar') {
+
+        var updatedCategory = {
+          guid: this.editableCategory.guid,
+          name: this.categoryForm.value['name']
+        };
+
+        this.categoryService.updateCategory(updatedCategory)
+          .subscribe((resp: any) => {
+              this.closeModelEventEmitter.emit(true);
+          }, (err: any) => {
+            this.snackbarService.showSnackBar('Não foi possível atualizar a categoria. Tente novamente!', 'OK');
+          });
+
+      } else {
+        this.categoryService.saveCategory(this.categoryForm.value)
+        .subscribe((resp: any) => {
+            this.closeModelEventEmitter.emit(true);
+        }, (err: any) => {
+          this.snackbarService.showSnackBar('Não foi possível criar uma categoria. Tente novamente!', 'OK');
+        });
+      }
+
     }
 
   }

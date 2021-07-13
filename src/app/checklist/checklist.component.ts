@@ -13,35 +13,44 @@ import { ChecklistItem } from '../_models/checklist_item';
 })
 export class ChecklistComponent implements OnInit {
 
-  public dataSource!: ChecklistItem[];
+  public dataSource: ChecklistItem[] = [];
 
   public displayedColumns: string[] = ['id', 'completed', 'description', 'deadline', 'postDate', 'category', 'actions'];
 
   constructor(private dialog: MatDialog, private checklistService: ChecklistService, private snackBarService: SnackBarService) { }
 
   ngOnInit(): void {
-    this.checklistService.getAllChecklistItems().subscribe(
-    (resp: ChecklistItem[]) =>  {
-      this.dataSource = resp;
-    }, (error: any) => {
-        console.log(`Ocorreu um erro ao chamar a API: ${error}`);
-    });
+    this.loadAllItems();
   }
 
-  public updateCompleteStatus(status: boolean){
-    console.log(`status alterado ${status}`);
+  private loadAllItems(){
+    this.checklistService.getAllChecklistItems().subscribe(
+      (resp: ChecklistItem[]) =>  {
+        this.dataSource = resp;
+      }, (error: any) => {
+          console.log(`Ocorreu um erro ao chamar a API: ${error}`);
+      });
+  }
+
+  public updateCompleteStatus(guid: string, status: boolean){
+
+    this.checklistService.updateCompleteStatus(guid, status).subscribe(
+      (resp: any) => {
+          this.snackBarService.showSnackBar('Item atualizado com successo', 'OK');
+          this.loadAllItems();
+      }, err => {
+        this.snackBarService.showSnackBar('Um erro ocorreu ao atualizar o item; por favor tente novamente!', 'OK');
+      }
+    );
   }
 
   public createNewItem(){
-    console.log('Criar novo item do checklist clicado!');
 
     this.dialog.open(ChecklistEditComponent, {
       disableClose: true, data: { actionName: 'Criar' },
     }).afterClosed().subscribe( resp => {
-      console.log('Fechando modal de criação');
-
       if(resp){
-        this.snackBarService.showSnackBar('Item do checklist criado com sucesso!', 'OK');
+        this.loadAllItems();
       }
     });
 
@@ -53,30 +62,27 @@ export class ChecklistComponent implements OnInit {
     this.dialog.open(DialogComponent, { disableClose: true,
       data: { msg: 'Você deseja realmente apagar esse item?', leftButton: 'Cancelar', rightButton: 'Ok' }
     }).afterClosed().subscribe(resp => {
-
-      console.log('Janela modal confirmar apagar fechada');
-
       if(resp){
-        this.snackBarService.showSnackBar('Item do checklist apagado com sucesso!', 'OK');
+        this.checklistService.deleteChecklistItem(checklistItem.guid).subscribe(
+          (resp: any) => {
+            this.loadAllItems();
+            this.snackBarService.showSnackBar('Item do checklist apagado com sucesso!', 'OK');
+          }, (err: any) => {
+            this.snackBarService.showSnackBar('Um erro ocorreu ao apagar o item do checklist; tente novamente!', 'OK');
+          }
+        )
       }
-
     });
 
   }
 
   public updateChecklistItem(checklistItem: ChecklistItem){
-    console.log('atualizando item do checklist');
-
-    this.dialog.open(ChecklistEditComponent, {
+      this.dialog.open(ChecklistEditComponent, {
       disableClose: true, data: { updatableChecklistItem: checklistItem, actionName: 'Editar' },
     }).afterClosed().subscribe( resp => {
-      console.log('Fechando modal de edição');
-
-
       if(resp){
-        this.snackBarService.showSnackBar('Item do checklist editado com sucesso!', 'OK');
+        this.loadAllItems();
       }
-
     });
   }
 

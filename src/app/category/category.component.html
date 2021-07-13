@@ -8,9 +8,13 @@
 
         <mat-card-content>
 
-        </mat-card-content>
+         <mat-card *ngIf="dataSource?.length == 0">
+           <mat-card-content>
+              Não há registros de categoria.
+           </mat-card-content>
+         </mat-card>
 
-        <table mat-table [dataSource]="dataSource" class="w-100">
+        <table mat-table *ngIf="dataSource.length > 0" [dataSource]="dataSource" class="w-100">
 
             <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef> Id. </th>
@@ -35,6 +39,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
 
+        </mat-card-content>
 
         <mat-card-actions>
 

@@ -15,11 +15,15 @@ import { Category } from '../_models/category';
 export class CategoryComponent implements OnInit {
 
   public displayedColumns: string[] = ['id', 'name', 'actions'];
-  public dataSource!: Category[];
+  public dataSource: Category[] = [];
 
   constructor(private dialog: MatDialog, private categoryService: CategoryService, private snackBarService: SnackBarService) { }
 
   ngOnInit(): void {
+    this.loadAllCategories();
+  }
+
+  private loadAllCategories(){
     this.categoryService.getAllCategories().subscribe((resp: Category[]) => {
       this.dataSource = resp;
     }, (error: any) => {
@@ -28,41 +32,40 @@ export class CategoryComponent implements OnInit {
   }
 
   public editCategory(inputCategory: Category){
-    console.log('edit category clicked');
-
     this.dialog.open(CategoryEditComponent, { disableClose: true, data : { editableCategory: inputCategory }
     }).afterClosed().subscribe(resp => {
-      console.log('Modal editar fechada');
       if(resp) {
+        this.loadAllCategories();
         this.snackBarService.showSnackBar('Categoria editada com successo!', 'OK');
       }
     });
 
-
   }
 
   public deleteCategory(category: Category){
-    console.log('delete category clicked');
-
     this.dialog.open(DialogComponent, { disableClose: true, data : {
       msg: 'Você tem certeza que deseja apagar essa categoria?', leftButton: 'Cancelar', rightButton: 'OK'
     }}).afterClosed().subscribe(resp => {
-
-        console.log('Modal apagar fechada');
         if(resp) {
-          this.snackBarService.showSnackBar('Categoria apagada com successo!', 'OK');
+
+          this.categoryService.deleteCategory(category.guid).subscribe(
+            (resp: any) => {
+              this.loadAllCategories();
+              this.snackBarService.showSnackBar('Categoria apagada com successo!', 'OK');
+            }, (err: any) => {
+              this.snackBarService.showSnackBar('Não é possível apagar a categoria pois está uso por um item de checklist!', 'OK');
+            }
+          )
         }
     });
 
   }
 
   public createNewCategory(){
-      console.log('create new category clicked');
-
       this.dialog.open(CategoryEditComponent, { disableClose: true, data : { actionName: 'Criar' }
       }).afterClosed().subscribe(resp => {
-        console.log('Modal criar fechada');
         if(resp) {
+          this.loadAllCategories();
           this.snackBarService.showSnackBar('Categoria criada com successo!', 'OK');
         }
       });
