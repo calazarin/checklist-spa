@@ -1,27 +1,22 @@
-# ChecklistApp
+# Checklist SPA
+
+A aplicação de Checklist é uma SPA desenvolvida para propósitos educacionais de compreender o funcionamento do Angular Framework.
+
+Principais funcionalidades da aplicação:
+
+1. Gerenciamento de categorias de um item do checklist (CRUD completo);
+2. Gerenciamento de items do checklist (CRUD completo).
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.10.
 
-## Development server
+## Rodando o código da aplicação localmente
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. Faça o clone desse repositório;
+2. Acesse a pasta criada com o código fonte;
+3. Abra uma nova janela do Prompt Command (ou uma nova janela de terminal para sistemas Unix) e digite `ng serve`;
+4. Quando finalizar o processo de buid, abra uma nova janela do browser e digite `http://localhost:4200/`;
+5. A aplicação será recarregada automaticamente caso algum arquivo do código fonte seja alterado.
+   
+## Resource Server
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+O código fonte da API criada para server essa SPA está diponível [nesse repositório](https://github.com/calazarin/checklist-api)
