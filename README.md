@@ -7,8 +7,6 @@ Principais funcionalidades da aplicação:
 1. Gerenciamento de categorias de um item do checklist (CRUD completo);
 2. Gerenciamento de items do checklist (CRUD completo).
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.10.
-
 ## Rodando o código da aplicação localmente
 
 1. Faça o clone desse repositório;
